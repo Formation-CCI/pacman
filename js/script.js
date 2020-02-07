@@ -80,7 +80,7 @@ function initGrille()
 function pacmanBouge(magrille)
 {
     document.querySelector('body').addEventListener('keydown', function () {
-        console.log(event.which);
+        console.log(event.key);
         var touche = window.event ? event.keyCode : event.which;
         if (touche == 38) {
             pacman.direction = 1;
@@ -96,52 +96,32 @@ function pacmanBouge(magrille)
         }
     });
     
+    if(pacman.direction == 1)
+    {
+        pacman.y--;
+        pacman.direction = 0;
+    }
+    if(pacman.direction == 2)
+    {
+        pacman.y++;
+        pacman.direction = 0;
+    }
+    if(pacman.direction == 3)
+    {
+        pacman.x++;
+        pacman.direction = 0;
+    }
+    if(pacman.direction == 4)
+    {
+        pacman.x--;
+        pacman.direction = 0;
+    }
     
     let pacmanEmplacement = document.createElement('div');
     pacmanEmplacement.classList.add("pacman");
     pacmanEmplacement.style.gridRow = pacman.y;
     pacmanEmplacement.style.gridColumn = pacman.x;
     magrille.appendChild(pacmanEmplacement);
-    let i = 0;
-    let y = 0;
-    
-    /* PARCOURIR LE TABLEAU ET REMPLIR LA GRILLE */
-    while(i < espaceGrille.length)
-    {
-        y = 0;
-        while(y < espaceGrille[i].length)
-        {
-            if(espaceGrille[i][y] == 0 || espaceGrille[i] == 0)
-            {
-                
-            }
-            else
-            {
-                if(pacman.direction == 1)
-                {
-                    pacman.y--;
-                    pacman.direction = 0;
-                }
-                if(pacman.direction == 2)
-                {
-                    pacman.y++;
-                    pacman.direction = 0;
-                }
-                if(pacman.direction == 3)
-                {
-                    pacman.x++;
-                    pacman.direction = 0;
-                }
-                if(pacman.direction == 4)
-                {
-                    pacman.x--;
-                    pacman.direction = 0;
-                }
-            }
-            y++;
-        }
-        i++;
-    }
 }
 
 var pacman = {

@@ -1,4 +1,4 @@
-/* BALISE */
+/* BALISES */
 
 h1
 {
@@ -10,7 +10,7 @@ section
     justify-content: center;
 }
 
-/* OBJET */
+/* OBJETS */
 
 .pacman
 {
@@ -33,7 +33,7 @@ section
     background: url('/img/fantome3.gif');
 }
 
-/* DECOR */
+/* DECORS */
 
 .sol
 {

@@ -1,3 +1,5 @@
+/* BALISE */
+
 h1
 {
     text-align: center;
@@ -7,11 +9,32 @@ section
     display: flex;
     justify-content: center;
 }
+
+/* OBJET */
+
 .pacman
 {
-    /*position: absolute;*/
     background: url('/img/pacman4.gif');
 }
+.fantome
+{
+    background: url('/img/fantome0.gif');
+}
+.fantome2
+{
+    background: url('/img/fantome1.gif');
+}
+.fantome3
+{
+    background: url('/img/fantome2.gif');
+}
+.fantome4
+{
+    background: url('/img/fantome3.gif');
+}
+
+/* DECOR */
+
 .sol
 {
     background: url('/img/sol.gif');

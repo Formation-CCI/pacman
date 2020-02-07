@@ -29,22 +29,79 @@ function jeu()
     var score = 0;
     var affichageScore = document.querySelector('h1');
     var grille = document.querySelector("#grille");
-    var pacman = {
-        x : 5,
-        y : 2,
-        direction : 0
+    var pacman = new personnage(5, 2, 0);
+    var fantome = new personnage(10, 11, 0);
+    var fantome2 = new personnage(10, 11, 0);
+    var fantome3 = new personnage(10, 11, 0);
+    
+    // FONCTION DECLARER
+
+    function getRandomIntInclusive(min, max) 
+    {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    // FONCTION DECLARER
+    function personnage(x, y, direction)
+    {
+        this.x = x;
+        this.y = y;
+        this.direction = 0;
+
+        /* DEPLACEMENT PERSONNAGE */
+        this.deplacementPersonnage = function(personnageDirection)
+        {
+            /* FAIT AVANCER LE PERSONNAGE */
+            this.direction = personnageDirection;
+            if(this.direction == 1)
+                this.y--;
+            else if(this.direction == 2)
+                this.y++;
+            else if(this.direction == 3)
+                this.x++;
+            else if(this.direction == 4)
+                this.x--;
+        
+            /* DETECTE SI IL Y A UN MUR */
+            if(espaceGrille[this.y - 1][this.x - 1] == 0 && this.direction == 1)
+                this.y++;
+            else if(espaceGrille[this.y - 1][this.x - 1] == 0 && this.direction == 2)
+                this.y--;
+            else if(espaceGrille[this.y - 1][this.x - 1] == 0 && this.direction == 3)
+                this.x--;
+            else if(espaceGrille[this.y - 1][this.x - 1] == 0 && this.direction == 4)
+                this.x++;
+        }
+
+        /* AFFICHAGE PERSONNAGE */
+        this.affichagePersonnage = function(magrille, classPersonnage)
+        {
+            perso = document.createElement('div');
+            perso.classList.add(classPersonnage);
+            perso.style.gridRow = this.y;
+            perso.style.gridColumn = this.x;
+            magrille.appendChild(perso);
+        }
+    }
 
     function viderGrille()
     {
         grille.innerHTML = "";
     }
 
+    function genereMap(grille, classMap, i, y)
+    {
+        let type = document.createElement('div');
+        type.classList.add(classMap)
+        type.style.gridColumn = (+y) + 1;
+        type.style.gridRow = (+i) + 1;
+        grille.appendChild(type);
+    }
+
     function initGrille()
     {   
-        /* VIDER LA GRILLE */
+        /* VIDE LA GRILLE */
         viderGrille();
 
         /* CREATION DE LA GRILLE */
@@ -54,118 +111,75 @@ function jeu()
         let i = 0;
         let y = 0;
         
-        /* PARCOURIR LE TABLEAU ET REMPLIR LA GRILLE */
+        /* PARCOURE LE TABLEAU ET REMPLIE LA GRILLE */
         while(i < espaceGrille.length)
         {
             y = 0;
             while(y < espaceGrille[i].length)
             {
                 if(espaceGrille[i][y] == 0)
-                {
-                    let mur = document.createElement('div');
-                    mur.classList.add("mur")
-                    mur.style.gridColumn = (+y) + 1;
-                    mur.style.gridRow = (+i) + 1;
-                    grille.appendChild(mur);
-                }
-                if(espaceGrille[i][y] == 1)
-                {
-                    let sol = document.createElement('div');
-                    sol.classList.add("sol");
-                    sol.style.gridColumn = (+y) + 1;
-                    sol.style.gridRow = (+i) + 1;
-                    grille.appendChild(sol);
-                }
-                if(espaceGrille[i][y] == 2)
-                {
-                    let bonbon = document.createElement('div');
-                    bonbon.classList.add("bonbon");
-                    bonbon.style.gridColumn = (+y) + 1;
-                    bonbon.style.gridRow = (+i) + 1;
-                    grille.appendChild(bonbon);
-                }
+                    genereMap(grille, "mur", i, y);
+                else if(espaceGrille[i][y] == 1)
+                    genereMap(grille, "sol", i, y);
+                else if(espaceGrille[i][y] == 2)
+                    genereMap(grille, "bonbon", i, y);
                 y++;
             }
             i++;
         }
     }
 
-    function pacmanBouge(magrille)
+    function gameplay(magrille)
     {
         /* RECUPERE LES TOUCHES DU CLAVIER */
         document.querySelector('body').addEventListener('keydown', function () 
         {
             var touche = window.event ? event.keyCode : event.which;
-            if (touche == 90) {
+            if (touche == 90)
                 pacman.direction = 1;
-            }
-            if (touche == 83) {
+            else if (touche == 83)
                 pacman.direction = 2;
-            }
-            if (touche == 69) {
+            else if (touche == 69) 
                 pacman.direction = 3;
-            }
-            if (touche == 65) {
+            else if (touche == 65)
                 pacman.direction = 4;
-            }
         });
-        
-        /* FAIT AVANCER LE PERSONNAGE */
-        if(pacman.direction == 1)
-        {
-            pacman.y--;
-        }
-        else if(pacman.direction == 2)
-        {
-            pacman.y++;
-        }
-        else if(pacman.direction == 3)
-        {
-            pacman.x++;
-        }
-        else if(pacman.direction == 4)
-        {
-            pacman.x--;
-        }
-    
-        /* DETECTE SI IL Y A UN MUR */
-        if(espaceGrille[pacman.y - 1][pacman.x - 1] == 0 && pacman.direction == 1)
-        {
-            pacman.y++;
-        }
-        else if(espaceGrille[pacman.y - 1][pacman.x - 1] == 0 && pacman.direction == 2)
-        {
-            pacman.y--;
-        }
-        else if(espaceGrille[pacman.y - 1][pacman.x - 1] == 0 && pacman.direction == 3)
-        {
-            pacman.x--;
-        }
-        else if(espaceGrille[pacman.y - 1][pacman.x - 1] == 0 && pacman.direction == 4)
-        {
-            pacman.x++;
-        }
 
+        var fantomeDirection = getRandomIntInclusive(1, 4);
+        var fantomeDirection2 = getRandomIntInclusive(1, 4);
+        var fantomeDirection3 = getRandomIntInclusive(1, 4);
+
+        /* DEPLACE LES PERSONNAGES */
+        pacman.deplacementPersonnage(pacman.direction);
+        fantome.deplacementPersonnage(fantomeDirection);
+        fantome2.deplacementPersonnage(fantomeDirection2);
+        fantome3.deplacementPersonnage(fantomeDirection3);
+        
         /* DETECTE SI IL Y A DES PIECES */
         if(espaceGrille[pacman.y - 1][pacman.x - 1] == 2)
         {
             espaceGrille[pacman.y - 1][pacman.x - 1] = 1;
             score++;
             affichageScore.textContent = "Votre score : " + score;
-        }
-    
+        } 
+        
+        /* DETECTE SI IL Y A DES FANTOMES */
+        if(espaceGrille[pacman.y - 1][pacman.x - 1] == espaceGrille[fantome.y - 1][fantome.x - 1])
+        {
+            magrille.removeChild(pacmanEmplacement);
+        } 
+        
         /* AFFICHAGE */
-        let pacmanEmplacement = document.createElement('div');
-        pacmanEmplacement.classList.add("pacman");
-        pacmanEmplacement.style.gridRow = pacman.y;
-        pacmanEmplacement.style.gridColumn = pacman.x;
-        magrille.appendChild(pacmanEmplacement);
+        pacman.affichagePersonnage(magrille, "pacman");
+        fantome.affichagePersonnage(magrille, "fantome");
+        fantome2.affichagePersonnage(magrille, "fantome2");
+        fantome3.affichagePersonnage(magrille, "fantome3");
     }
 
     function refresh() 
     {  
         initGrille();
-        pacmanBouge(grille);
+        gameplay(grille);
         setTimeout(refresh, 500);
     }
     

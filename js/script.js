@@ -76,11 +76,13 @@ function initGrille()
         i++;
     }
 }
+var score = 0;
+var affichageScore = document.querySelector('h1');
 
 function pacmanBouge(magrille)
 {
     document.querySelector('body').addEventListener('keydown', function () {
-        console.log(event.key);
+        /*console.log(event.key);*/
         var touche = window.event ? event.keyCode : event.which;
         if (touche == 38) {
             pacman.direction = 1;
@@ -99,24 +101,43 @@ function pacmanBouge(magrille)
     if(pacman.direction == 1)
     {
         pacman.y--;
-        pacman.direction = 0;
+        
     }
     if(pacman.direction == 2)
     {
         pacman.y++;
-        pacman.direction = 0;
     }
     if(pacman.direction == 3)
     {
         pacman.x++;
-        pacman.direction = 0;
     }
     if(pacman.direction == 4)
     {
         pacman.x--;
-        pacman.direction = 0;
     }
-    
+    if(espaceGrille[pacman.y - 1][pacman.x - 1] == 0 && pacman.direction == 1)
+    {
+        pacman.y++;
+    }
+    if(espaceGrille[pacman.y - 1][pacman.x - 1] == 0 && pacman.direction == 2)
+    {
+        pacman.y--;
+    }
+    if(espaceGrille[pacman.y - 1][pacman.x - 1] == 0 && pacman.direction == 3)
+    {
+        pacman.x--;
+    }
+    if(espaceGrille[pacman.y - 1][pacman.x - 1] == 0 && pacman.direction == 4)
+    {
+        pacman.x++;
+    }
+    if(espaceGrille[pacman.y - 1][pacman.x - 1] == 2)
+    {
+        espaceGrille[pacman.y - 1][pacman.x - 1] = 1;
+        
+        score++;
+        affichageScore.textContent = "Votre score : " + score;
+    }
     let pacmanEmplacement = document.createElement('div');
     pacmanEmplacement.classList.add("pacman");
     pacmanEmplacement.style.gridRow = pacman.y;
@@ -134,6 +155,6 @@ var grille = document.querySelector("#grille");
 function refresh() {  
         initGrille();
         pacmanBouge(grille);
-        setTimeout(refresh, 100);
+        setTimeout(refresh, 500);
 }
 refresh();

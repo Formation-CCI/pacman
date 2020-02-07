@@ -7,7 +7,11 @@ section
     display: flex;
     justify-content: center;
 }
-
+.pacman
+{
+    /*position: absolute;*/
+    background: url('/img/pacman4.gif');
+}
 .sol
 {
     background: url('/img/sol.gif');

@@ -7,7 +7,16 @@ section
     display: flex;
     justify-content: center;
 }
-#grille
+
+.sol
 {
-    
+    background: url('/img/sol.gif');
+}
+.mur
+{
+    background: url('/img/mur.gif');
+}
+.bonbon
+{
+    background: url('/img/bonbon.gif');
 }

@@ -128,6 +128,12 @@ function jeu()
             i++;
         }
     }
+    
+    function fantomeCollision(fantomeToucher)
+    {
+        if(espaceGrille[pacman.y - 1][pacman.x - 1] == espaceGrille[fantomeToucher.y - 1][fantomeToucher.x - 1])
+            magrille.removeChild(pacmanEmplacement);
+    }
 
     function gameplay(magrille)
     {
@@ -160,16 +166,17 @@ function jeu()
         {
             espaceGrille[pacman.y - 1][pacman.x - 1] = 1;
             score++;
-            affichageScore.textContent = "Votre score : " + score;
+            affichageScore.textContent = score;
         } 
         
         /* DETECTE SI IL Y A DES FANTOMES */
-        if(espaceGrille[pacman.y - 1][pacman.x - 1] == espaceGrille[fantome.y - 1][fantome.x - 1])
-        {
-            magrille.removeChild(pacmanEmplacement);
-        } 
+
+        fantomeCollision(fantome);
+        fantomeCollision(fantome2);
+        fantomeCollision(fantome3);
         
         /* AFFICHAGE */
+        
         pacman.affichagePersonnage(magrille, "pacman");
         fantome.affichagePersonnage(magrille, "fantome");
         fantome2.affichagePersonnage(magrille, "fantome2");
@@ -180,7 +187,7 @@ function jeu()
     {  
         initGrille();
         gameplay(grille);
-        setTimeout(refresh, 500);
+        setTimeout(refresh, 400);
     }
     
     // ACTUALISE LE JEU

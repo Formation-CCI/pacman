@@ -132,7 +132,7 @@ function jeu()
     function fantomeCollision(fantomeToucher)
     {
         if(espaceGrille[pacman.y - 1][pacman.x - 1] == espaceGrille[fantomeToucher.y - 1][fantomeToucher.x - 1])
-            magrille.removeChild(pacmanEmplacement);
+            magrille.removeChild(pacman);
     }
 
     function gameplay(magrille)
@@ -156,8 +156,9 @@ function jeu()
         var fantomeDirection3 = getRandomIntInclusive(1, 4);
 
         /* DEPLACE LES PERSONNAGES */
-        pacman.deplacementPersonnage(pacman.direction);
-        fantome.deplacementPersonnage(fantomeDirection);
+        
+        console.log(pacman.deplacementPersonnage(pacman.direction));
+        fantome.deplacementPersonnage(fantomeDirection);sz
         fantome2.deplacementPersonnage(fantomeDirection2);
         fantome3.deplacementPersonnage(fantomeDirection3);
         

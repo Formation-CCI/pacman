@@ -158,7 +158,7 @@ function jeu()
         /* DEPLACE LES PERSONNAGES */
         
         console.log(pacman.deplacementPersonnage(pacman.direction));
-        fantome.deplacementPersonnage(fantomeDirection);sz
+        fantome.deplacementPersonnage(fantomeDirection);
         fantome2.deplacementPersonnage(fantomeDirection2);
         fantome3.deplacementPersonnage(fantomeDirection3);
         

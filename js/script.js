@@ -12,9 +12,9 @@ function jeu()
         [0, 2, 2, 2, 2, 0, 2, 2, 2, 0, 2, 2, 2, 0, 2, 2, 2, 2, 0],
         [0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0],
         [0, 1, 1, 0, 2, 0, 2, 2, 2, 2, 2, 2, 2, 0, 2, 0, 1, 1, 0],
-        [0, 0, 0, 0, 2, 0, 2, 0, 0, 2, 0, 0, 2, 0, 2, 0, 0, 0, 0],
-        [2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2],
-        [0, 0, 0, 0, 2, 0, 2, 0, 0, 2, 0, 0, 2, 0, 2, 0, 0, 0, 0],
+        [0, 0, 0, 0, 2, 0, 2, 0, 0, 1, 0, 0, 2, 0, 2, 0, 0, 0, 0],
+        [2, 2, 2, 2, 2, 2, 2, 0, 1, 1, 1, 0, 2, 2, 2, 2, 2, 2, 2],
+        [0, 0, 0, 0, 2, 0, 2, 0, 0, 1, 0, 0, 2, 0, 2, 0, 0, 0, 0],
         [0, 1, 1, 0, 2, 0, 2, 2, 2, 2, 2, 2, 2, 0, 2, 0, 1, 1, 0],
         [0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0],
         [0, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 0],
@@ -28,13 +28,42 @@ function jeu()
     ];
     var score = 0;
     var affichageScore = document.querySelector('h1');
+    var affichageVie = document.querySelector('.AffichageVie');
     var grille = document.querySelector("#grille");
+    var vie = 3;
+    var inc = 0;
+    var suppressionVie = false;
     var pacman = new personnage(5, 2, 0);
     var fantome = new personnage(10, 11, 0);
     var fantome2 = new personnage(10, 11, 0);
     var fantome3 = new personnage(10, 11, 0);
     
     // FONCTION DECLARER
+    document.querySelector('#rejouer').addEventListener('click', function () 
+        {
+            refresh();
+        });
+    function calculVie()
+    {
+        if(suppressionVie == false)
+        {
+            while(inc < vie)
+            {
+                let nombreVie = document.createElement('div');
+                nombreVie.classList.add("vie")
+                nombreVie.style.gridColumn = 10;
+                nombreVie.style.gridRow = 1;
+                affichageVie.appendChild(nombreVie);
+                inc++;
+            }
+        }
+        else
+        {
+            var nombreVie = affichageVie.lastElementChild; 
+            affichageVie.removeChild(nombreVie);
+            suppressionVie = false;
+        }
+    }
 
     function getRandomIntInclusive(min, max) 
     {
@@ -103,6 +132,7 @@ function jeu()
     {   
         /* VIDE LA GRILLE */
         viderGrille();
+        calculVie()
 
         /* CREATION DE LA GRILLE */
         grille.style.display = "grid";
@@ -110,7 +140,10 @@ function jeu()
         grille.style.gridTemplateColumns = "repeat(19, 40px)";
         let i = 0;
         let y = 0;
-        
+        if(score == 191)
+        {
+            alert('Vous avez gagné !');
+        }
         /* PARCOURE LE TABLEAU ET REMPLIE LA GRILLE */
         while(i < espaceGrille.length)
         {
@@ -122,17 +155,28 @@ function jeu()
                 else if(espaceGrille[i][y] == 1)
                     genereMap(grille, "sol", i, y);
                 else if(espaceGrille[i][y] == 2)
+                {
                     genereMap(grille, "bonbon", i, y);
+                }
                 y++;
             }
             i++;
         }
     }
     
-    function fantomeCollision(fantomeToucher)
+    function Collision(magrille, explorer,cibleToucher)
     {
-        if(espaceGrille[pacman.y - 1][pacman.x - 1] == espaceGrille[fantomeToucher.y - 1][fantomeToucher.x - 1])
-            magrille.removeChild(pacman);
+        if(explorer.y == cibleToucher.y && explorer.x == cibleToucher.x)
+        {
+            vie--;
+            suppressionVie = true;
+            pacman.x = 5;
+            pacman.y = 2;
+            if(vie == 0)
+            {
+                alert('Game over');
+            }
+        }
     }
 
     function gameplay(magrille)
@@ -156,28 +200,29 @@ function jeu()
         var fantomeDirection3 = getRandomIntInclusive(1, 4);
 
         /* DEPLACE LES PERSONNAGES */
-        
-        console.log(pacman.deplacementPersonnage(pacman.direction));
+        pacman.deplacementPersonnage(pacman.direction);
         fantome.deplacementPersonnage(fantomeDirection);
         fantome2.deplacementPersonnage(fantomeDirection2);
         fantome3.deplacementPersonnage(fantomeDirection3);
         
-        /* DETECTE SI IL Y A DES PIECES */
+        /* DETECTE SI IL Y A DES BONBONS */
         if(espaceGrille[pacman.y - 1][pacman.x - 1] == 2)
         {
             espaceGrille[pacman.y - 1][pacman.x - 1] = 1;
             score++;
-            affichageScore.textContent = score;
+            affichageScore.textContent = score; 
         } 
         
         /* DETECTE SI IL Y A DES FANTOMES */
+        Collision(magrille, pacman, fantome);
+        Collision(magrille, pacman, fantome2);
+        Collision(magrille, pacman, fantome3);
 
-        fantomeCollision(fantome);
-        fantomeCollision(fantome2);
-        fantomeCollision(fantome3);
+        Collision(magrille, fantome, pacman);
+        Collision(magrille, fantome2, pacman);
+        Collision(magrille, fantome3, pacman);
         
         /* AFFICHAGE */
-        
         pacman.affichagePersonnage(magrille, "pacman");
         fantome.affichagePersonnage(magrille, "fantome");
         fantome2.affichagePersonnage(magrille, "fantome2");

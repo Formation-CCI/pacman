@@ -1,44 +1,6 @@
 /* BALISES */
 
-h1
-{   
-    font-size: 30px;
-    position: absolute;
-    margin-left: 350px;
-}
-.h1
-{
-    background-color: black;
-    color: white;
-    text-align: center;
-    height: 200px;
-    width: 760px;
-}
-.AffichageVie
-{
-    display: flex;
-    align-content: center;
-    justify-content: center;
-    background-color: black;
-    height: 200px;
-    width: 760px;
-    
-}
-.btn
-{
-    background-color: black;
-    padding: 20px;
-}
-button
-{
-    background-color: #ffff00;
-    padding: 30px;
-    border: none;
-}
-button:hover
-{
-    cursor: pointer;
-}
+
 .block
 {
     box-shadow: 5px 5px 15px rgba(0,0,0,.35);
@@ -59,19 +21,19 @@ section
 {
     background: url('/img/pacman4.gif');
 }
-.fantome
+.fantome-bleue
 {
     background: url('/img/fantome0.gif');
 }
-.fantome2
+.fantome-orange
 {
     background: url('/img/fantome1.gif');
 }
-.fantome3
+.fantome-rouge
 {
     background: url('/img/fantome2.gif');
 }
-.fantome4
+.fantome-vert
 {
     background: url('/img/fantome3.gif');
 }
@@ -89,11 +51,4 @@ section
 .bonbon
 {
     background: url('/img/bonbon.gif');
-}
-
-.vie
-{
-    background: url('/img/pacman4.gif');
-    height: 40px;
-    width: 40px;
 }

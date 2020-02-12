@@ -1,20 +1,18 @@
-class Fantome
+class PacMan
 {
     x;
     y;
     direction;
 
     constructor(){
-        this.x = 10;
-        this.y = 11;
+        this.x = 5;
+        this.y = 2;
         this.direction = 0;
     }
 
-    bougeFantome(magrille, pacman, couleurFantome, fantomeDirection)
+    bougePacman(magrille, fantome)
     {
-        this.direction = fantomeDirection;
-
-        /* FAIT AVANCER LE FANTOME */
+        /* FAIT AVANCER PACMAN */
         if(this.direction == 1)
             this.y--;
         else if(this.direction == 2)
@@ -39,17 +37,23 @@ class Fantome
         else if (this.x == 20 && this.y == 11)  {
             this.x = 1;
         }
-        
-        /* DETECTE PACMAN */
-        if(this.y == pacman.y && this.x == pacman.x)
+
+        /* DETECTE LES BONBONS */
+        if(espaceGrille[this.y - 1][this.x - 1] == 2)
         {
-            pacman.x = 5;
-            pacman.y = 2;
+            espaceGrille[this.y - 1][this.x - 1] = 1;
+        }
+
+        /* DETECTE LES FANTOMES */
+        if(this.y == fantome.y && this.x == fantome.x)
+        {
+            this.x = 5;
+            this.y = 2;
         } 
 
-        /* AFFICHAGE FANTOME */
+        /* AFFICHAGE PACMAN */
         let pacmanAffichage = document.createElement('div');
-        pacmanAffichage.classList.add(couleurFantome);
+        pacmanAffichage.classList.add('pacman');
         pacmanAffichage.style.gridRow = this.y;
         pacmanAffichage.style.gridColumn = this.x;
         magrille.appendChild(pacmanAffichage);
